@@ -1,0 +1,16 @@
+{
+  "name": "Scientific Glassmorphism Calculator",
+  "short_name": "Calculator",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#764ba2",
+  "theme_color": "#764ba2",
+  "description": "A premium, scientific calculator with voice control and history.",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/564/564429.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

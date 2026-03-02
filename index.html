@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#764ba2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -15,13 +17,18 @@
     <div class="calculator-container">
         <div class="calculator-glass">
             <div class="calculator-header">
-                <div class="theme-toggle">
-                    <button id="theme-toggle" title="Toggle Theme">
-                        <span class="sun-icon">☀️</span>
-                        <span class="moon-icon">🌙</span>
-                    </button>
+                <div class="theme-controls">
+                    <select id="theme-select" class="header-btn" title="Select Theme">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="neon">Neon</option>
+                        <option value="pastel">Pastel</option>
+                    </select>
                 </div>
-                <button id="toggle-history" class="header-btn" title="View History">📜</button>
+                <div class="header-actions">
+                    <button id="voice-btn" class="header-btn" title="Voice Input">🎤</button>
+                    <button id="toggle-history" class="header-btn" title="View History">📜</button>
+                </div>
             </div>
 
             <div class="history-panel" id="history-panel">
@@ -34,6 +41,7 @@
 
             <div class="calculator-display">
                 <button id="copy-btn" class="copy-btn" title="Copy Result">content_copy</button>
+                <div class="expression-preview" id="expression-preview"></div>
                 <div class="previous-operand" id="previous-operand"></div>
                 <div class="current-operand" id="current-operand">0</div>
             </div>
