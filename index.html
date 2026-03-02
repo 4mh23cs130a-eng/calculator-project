@@ -14,16 +14,41 @@
 <body>
     <div class="calculator-container">
         <div class="calculator-glass">
-            <div class="theme-toggle">
-                <button id="theme-toggle" title="Toggle Theme">
-                    <span class="sun-icon">☀️</span>
-                    <span class="moon-icon">🌙</span>
-                </button>
+            <div class="calculator-header">
+                <div class="theme-toggle">
+                    <button id="theme-toggle" title="Toggle Theme">
+                        <span class="sun-icon">☀️</span>
+                        <span class="moon-icon">🌙</span>
+                    </button>
+                </div>
+                <button id="toggle-history" class="header-btn" title="View History">📜</button>
             </div>
+
+            <div class="history-panel" id="history-panel">
+                <div class="history-header">
+                    <span>History</span>
+                    <button id="clear-history">Clear</button>
+                </div>
+                <ul id="history-list"></ul>
+            </div>
+
             <div class="calculator-display">
+                <button id="copy-btn" class="copy-btn" title="Copy Result">content_copy</button>
                 <div class="previous-operand" id="previous-operand"></div>
                 <div class="current-operand" id="current-operand">0</div>
             </div>
+
+            <div class="scientific-buttons" id="scientific-buttons">
+                <button class="btn btn-sci" data-sci="sin">sin</button>
+                <button class="btn btn-sci" data-sci="cos">cos</button>
+                <button class="btn btn-sci" data-sci="tan">tan</button>
+                <button class="btn btn-sci" data-sci="sqrt">√</button>
+                <button class="btn btn-sci" data-sci="sq">x²</button>
+                <button class="btn btn-sci" data-sci="log">log</button>
+                <button class="btn btn-sci" data-sci="pi">π</button>
+                <button class="btn btn-operator" id="toggle-sci-mode" title="Toggle Scientific Mode">🔬</button>
+            </div>
+
             <div class="calculator-buttons">
                 <button class="btn btn-action" data-all-clear>AC</button>
                 <button class="btn btn-action" data-delete>⌫</button>
