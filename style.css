@@ -1,8 +1,8 @@
 :root {
     --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --calc-bg: rgba(255, 255, 255, 0.1);
-    --btn-bg: rgba(255, 255, 255, 0.2);
-    --btn-hover: rgba(255, 255, 255, 0.3);
+    --btn-bg: rgba(255, 255, 255, 0.15);
+    --btn-hover: rgba(255, 255, 255, 0.25);
     --operator-bg: rgba(67, 192, 255, 0.7);
     --operator-hover: rgba(67, 192, 255, 0.881);
     --equals-bg: rgba(46, 163, 213, 0.7);
@@ -11,6 +11,23 @@
     --action-hover: rgba(255, 71, 87, 0.9);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --calc-bg: rgba(255, 255, 255, 0.6);
+    --btn-bg: rgba(0, 0, 0, 0.05);
+    --btn-hover: rgba(0, 0, 0, 0.1);
+    --operator-bg: rgba(67, 192, 255, 0.5);
+    --operator-hover: rgba(67, 192, 255, 0.7);
+    --equals-bg: rgba(46, 163, 213, 0.5);
+    --equals-hover: rgba(46, 182, 213, 0.7);
+    --action-bg: rgba(255, 71, 87, 0.5);
+    --action-hover: rgba(255, 71, 87, 0.7);
+    --text-primary: #2d3436;
+    --text-secondary: rgba(45, 52, 54, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -37,13 +54,45 @@ body {
     background: var(--calc-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--glass-border);
     border-radius: 30px;
     padding: 30px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
     width: 360px;
     transform: rotateX(5deg);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: -50px;
+    right: 10px;
+}
+
+#theme-toggle {
+    background: var(--btn-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+#theme-toggle:hover {
+    background: var(--btn-hover);
+}
+
+.sun-icon {
+    display: none;
+}
+
+[data-theme="light"] .sun-icon {
+    display: block;
+}
+
+[data-theme="light"] .moon-icon {
+    display: none;
 }
 
 .calculator-glass:hover {
@@ -139,10 +188,36 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .calculator-glass {
     animation: fadeIn 0.8s ease-out;
+}
+@media (max-width: 450px) {
+    .calculator-glass {
+        width: 320px;
+        padding: 20px;
+    }
+    
+    .current-operand {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 15px 0;
+        font-size: 1.1rem;
+    }
+    
+    .theme-toggle {
+        top: -45px;
+    }
 }

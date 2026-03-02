@@ -53,8 +53,9 @@ class Calculator {
                 break
             case '/':
                 if (current === 0) {
-                    alert("Cannot divide by zero")
-                    this.clear()
+                    this.currentOperand = "Error"
+                    this.operation = undefined
+                    this.previousOperand = ''
                     return
                 }
                 computation = prev / current
@@ -62,12 +63,13 @@ class Calculator {
             default:
                 return
         }
-        this.currentOperand = computation
+        this.currentOperand = computation.toString()
         this.operation = undefined
         this.previousOperand = ''
     }
 
     getDisplayNumber(number) {
+        if (number === "Error") return "Error"
         const stringNumber = number.toString()
         const integerDigits = parseFloat(stringNumber.split('.')[0])
         const decimalDigits = stringNumber.split('.')[1]
@@ -105,6 +107,43 @@ const previousOperandTextElement = document.getElementById('previous-operand')
 const currentOperandTextElement = document.getElementById('current-operand')
 
 const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
+
+// Theme Toggle Logic
+const themeToggleButton = document.getElementById('theme-toggle')
+const currentTheme = localStorage.getItem('theme')
+
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme)
+}
+
+themeToggleButton.addEventListener('click', () => {
+    let theme = document.documentElement.getAttribute('data-theme')
+    if (theme === 'light') {
+        document.documentElement.removeAttribute('data-theme')
+        localStorage.setItem('theme', 'dark')
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light')
+        localStorage.setItem('theme', 'light')
+    }
+})
+
+// Keyboard Support
+window.addEventListener('keydown', e => {
+    if (e.key >= 0 && e.key <= 9) {
+        calculator.appendNumber(e.key)
+    } else if (e.key === '.') {
+        calculator.appendNumber(e.key)
+    } else if (e.key === '=' || e.key === 'Enter') {
+        calculator.compute()
+    } else if (e.key === 'Backspace') {
+        calculator.delete()
+    } else if (e.key === 'Escape') {
+        calculator.clear()
+    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        calculator.chooseOperation(e.key)
+    }
+    calculator.updateDisplay()
+})
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
