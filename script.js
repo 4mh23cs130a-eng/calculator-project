@@ -163,6 +163,142 @@ class Calculator {
     }
 }
 
+class StatsAnalyzer {
+    static calculateMean(data) {
+        return data.reduce((a, b) => a + b, 0) / data.length
+    }
+
+    static calculateMedian(data) {
+        const sorted = [...data].sort((a, b) => a - b)
+        const middle = Math.floor(sorted.length / 2)
+        if (sorted.length % 2 === 0) {
+            return (sorted[middle - 1] + sorted[middle]) / 2
+        }
+        return sorted[middle]
+    }
+
+    static calculateMode(data) {
+        const counts = {}
+        data.forEach(n => counts[n] = (counts[n] || 0) + 1)
+        let maxCount = 0
+        let modes = []
+        for (const n in counts) {
+            if (counts[n] > maxCount) {
+                maxCount = counts[n]
+                modes = [Number(n)]
+            } else if (counts[n] === maxCount) {
+                modes.push(Number(n))
+            }
+        }
+        if (modes.length === data.length) return "None"
+        return modes.join(', ')
+    }
+
+    static calculateStdDev(data) {
+        const mean = this.calculateMean(data)
+        const squareDiffs = data.map(n => Math.pow(n - mean, 2))
+        const avgSquareDiff = this.calculateMean(squareDiffs)
+        return Math.sqrt(avgSquareDiff)
+    }
+}
+
+let statsChart = null
+
+// UI Elements & State
+const statsPanel = document.getElementById('stats-panel')
+const calculatorMainUI = document.getElementById('calculator-main-ui')
+const toggleStatsBtn = document.getElementById('toggle-stats')
+const statsInput = document.getElementById('stats-input')
+const analyzeBtn = document.getElementById('analyze-btn')
+const csvFileInput = document.getElementById('csv-file')
+
+// Mode Toggle
+toggleStatsBtn.addEventListener('click', () => {
+    statsPanel.classList.toggle('active')
+    calculatorMainUI.classList.toggle('hidden')
+    toggleStatsBtn.innerText = statsPanel.classList.contains('active') ? '🔢' : '📊'
+})
+
+// Data Analysis Logic
+function performAnalysis(data) {
+    if (data.length === 0) return
+
+    const mean = StatsAnalyzer.calculateMean(data)
+    const median = StatsAnalyzer.calculateMedian(data)
+    const mode = StatsAnalyzer.calculateMode(data)
+    const stdDev = StatsAnalyzer.calculateStdDev(data)
+
+    document.getElementById('mean-val').innerText = mean.toFixed(2)
+    document.getElementById('median-val').innerText = median.toFixed(2)
+    document.getElementById('mode-val').innerText = mode
+    document.getElementById('std-val').innerText = stdDev.toFixed(2)
+
+    updateChart(data)
+}
+
+function updateChart(data) {
+    const ctx = document.getElementById('stats-chart').getContext('2d')
+
+    if (statsChart) {
+        statsChart.destroy()
+    }
+
+    statsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.map((_, i) => i + 1),
+            datasets: [{
+                label: 'Data Values',
+                data: data,
+                borderColor: '#00ffff',
+                backgroundColor: 'rgba(0, 255, 255, 0.1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: 'rgba(255, 255, 255, 0.6)' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: 'rgba(255, 255, 255, 0.6)' }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    })
+}
+
+// Event Listeners
+analyzeBtn.addEventListener('click', () => {
+    const input = statsInput.value
+    const data = input.split(',').map(n => parseFloat(n.trim())).filter(n => !isNaN(n))
+    performAnalysis(data)
+})
+
+csvFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+        const text = event.target.result
+        const data = text.split(/[\n,]/).map(n => parseFloat(n.trim())).filter(n => !isNaN(n))
+        statsInput.value = data.join(', ')
+        performAnalysis(data)
+    }
+    reader.readAsText(file)
+})
+
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

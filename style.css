@@ -407,6 +407,119 @@ body {
     animation: pulsate 0.3s ease-out;
 }
 
+.calculator-main-ui {
+    display: block;
+}
+
+.stats-panel {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.stats-panel.active {
+    display: flex;
+}
+
+.calculator-main-ui.hidden {
+    display: none;
+}
+
+.stats-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.stats-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+#stats-input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 10px 15px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    outline: none;
+}
+
+#analyze-btn {
+    background: var(--operator-bg);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+#analyze-btn:hover {
+    background: var(--operator-hover);
+    transform: translateY(-2px);
+}
+
+.csv-upload {
+    text-align: center;
+}
+
+.csv-label {
+    display: inline-block;
+    background: var(--btn-bg);
+    border: 1px dashed var(--glass-border);
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.csv-label:hover {
+    background: var(--btn-hover);
+    border-color: var(--text-primary);
+}
+
+.csv-label input {
+    display: none;
+}
+
+.stats-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.stat-item {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-item span:last-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.chart-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 10px;
+    min-height: 180px;
+}
+
 @media (max-width: 450px) {
     .calculator-glass {
         width: 340px;

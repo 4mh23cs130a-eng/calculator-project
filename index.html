@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -18,6 +19,7 @@
         <div class="calculator-glass">
             <div class="calculator-header">
                 <div class="theme-controls">
+                    <button id="toggle-stats" class="header-btn" title="Stats Mode">📊</button>
                     <select id="theme-select" class="header-btn" title="Select Theme">
                         <option value="dark">Dark</option>
                         <option value="light">Light</option>
@@ -39,51 +41,78 @@
                 <ul id="history-list"></ul>
             </div>
 
-            <div class="calculator-display">
-                <button id="copy-btn" class="copy-btn" title="Copy Result">content_copy</button>
-                <div class="expression-preview" id="expression-preview"></div>
-                <div class="previous-operand" id="previous-operand"></div>
-                <div class="current-operand" id="current-operand">0</div>
+            <!-- Stats Panel -->
+            <div class="stats-panel" id="stats-panel">
+                <div class="stats-header">Data Analytics</div>
+                <div class="stats-input-group">
+                    <input type="text" id="stats-input" placeholder="Enter numbers (e.g. 10, 20, 30)">
+                    <button id="analyze-btn">Analyze</button>
+                </div>
+                <div class="csv-upload">
+                    <label for="csv-file" class="csv-label">
+                        <span>Upload CSV</span>
+                        <input type="file" id="csv-file" accept=".csv">
+                    </label>
+                </div>
+                <div class="stats-results" id="stats-results">
+                    <div class="stat-item"><span class="label">Mean:</span> <span id="mean-val">-</span></div>
+                    <div class="stat-item"><span class="label">Median:</span> <span id="median-val">-</span></div>
+                    <div class="stat-item"><span class="label">Mode:</span> <span id="mode-val">-</span></div>
+                    <div class="stat-item"><span class="label">Std Dev:</span> <span id="std-val">-</span></div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="stats-chart"></canvas>
+                </div>
             </div>
 
-            <div class="scientific-buttons" id="scientific-buttons">
-                <button class="btn btn-sci" data-sci="sin">sin</button>
-                <button class="btn btn-sci" data-sci="cos">cos</button>
-                <button class="btn btn-sci" data-sci="tan">tan</button>
-                <button class="btn btn-sci" data-sci="sqrt">√</button>
-                <button class="btn btn-sci" data-sci="sq">x²</button>
-                <button class="btn btn-sci" data-sci="log">log</button>
-                <button class="btn btn-sci" data-sci="pi">π</button>
-                <button class="btn btn-operator" id="toggle-sci-mode" title="Toggle Scientific Mode">🔬</button>
-            </div>
+            <div class="calculator-main-ui" id="calculator-main-ui">
+                <div class="calculator-display">
+                    <button id="copy-btn" class="copy-btn" title="Copy Result">content_copy</button>
+                    <div class="expression-preview" id="expression-preview"></div>
+                    <div class="previous-operand" id="previous-operand"></div>
+                    <div class="current-operand" id="current-operand">0</div>
+                </div>
 
-            <div class="calculator-buttons">
-                <button class="btn btn-action" data-all-clear>AC</button>
-                <button class="btn btn-action" data-delete>⌫</button>
-                <button class="btn btn-operator" data-operation="/">÷</button>
-                <button class="btn btn-operator" data-operation="*">×</button>
+                <div class="scientific-buttons" id="scientific-buttons">
+                    <button class="btn btn-sci" data-sci="sin">sin</button>
+                    <button class="btn btn-sci" data-sci="cos">cos</button>
+                    <button class="btn btn-sci" data-sci="tan">tan</button>
+                    <button class="btn btn-sci" data-sci="sqrt">√</button>
+                    <button class="btn btn-sci" data-sci="sq">x²</button>
+                    <button class="btn btn-sci" data-sci="log">log</button>
+                    <button class="btn btn-sci" data-sci="pi">π</button>
+                    <button class="btn btn-operator" id="toggle-sci-mode" title="Toggle Scientific Mode">🔬</button>
+                </div>
 
-                <button class="btn" data-number>7</button>
-                <button class="btn" data-number>8</button>
-                <button class="btn" data-number>9</button>
-                <button class="btn btn-operator" data-operation="-">−</button>
+                <div class="calculator-buttons">
+                    <button class="btn btn-action" data-all-clear>AC</button>
+                    <button class="btn btn-action" data-delete>⌫</button>
+                    <button class="btn btn-operator" data-operation="/">÷</button>
+                    <button class="btn btn-operator" data-operation="*">×</button>
 
-                <button class="btn" data-number>4</button>
-                <button class="btn" data-number>5</button>
-                <button class="btn" data-number>6</button>
-                <button class="btn btn-operator" data-operation="+">+</button>
+                    <button class="btn" data-number>7</button>
+                    <button class="btn" data-number>8</button>
+                    <button class="btn" data-number>9</button>
+                    <button class="btn btn-operator" data-operation="-">−</button>
 
-                <button class="btn" data-number>1</button>
-                <button class="btn" data-number>2</button>
-                <button class="btn" data-number>3</button>
-                <button class="btn btn-equals" data-equals>=</button>
+                    <button class="btn" data-number>4</button>
+                    <button class="btn" data-number>5</button>
+                    <button class="btn" data-number>6</button>
+                    <button class="btn btn-operator" data-operation="+">+</button>
 
-                <button class="btn btn-zero" data-number>0</button>
-                <button class="btn" data-number>.</button>
+                    <button class="btn" data-number>1</button>
+                    <button class="btn" data-number>2</button>
+                    <button class="btn" data-number>3</button>
+                    <button class="btn btn-equals" data-equals>=</button>
+
+                    <button class="btn btn-zero" data-number>0</button>
+                    <button class="btn" data-number>.</button>
+                </div>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
+
 </body>
 
 </html>
